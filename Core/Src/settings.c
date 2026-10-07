@@ -123,7 +123,7 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
             time_dosing_pulse_temp = 0;
         }
     }
-    char buf[17];
+    char buf[12];
     sprintf(
         buf,
         "%ld.%ld",
@@ -138,6 +138,10 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
         FEE_Write(TIME_DOSING_PULSE, (uint16_t)time_dosing_pulse_temp, fee_rec);
         current_settings_main_nav = SETTINGS_MENU;
     }
+}
+static void Calibration_Loop(const int8_t enc_delta, const uint8_t is_short)
+{
+    
 }
 
 static void Settings_Feature_Nav(int8_t enc_delta, uint8_t is_short)
