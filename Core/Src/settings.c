@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "lcd.h"
 #include "fee.h"
@@ -13,7 +14,8 @@
 
 static FEE_REC fee_rec[] = {
     {.virt_addr = WEIGHT, .data = 3000, .default_value = 3000},
-    {.virt_addr = HX_FACTOR, .data = 1, .default_value = 1},
+    {.virt_addr = LOW_HX_FACTOR, .data = 0, .default_value = 0},
+    {.virt_addr = HIGH_HX_FACTOR, .data = 0x3F80, .default_value = 0x3F80}, // 1.0f
     {.virt_addr = STOP_BEFORE_TARGET_WEIGHT, .data = 50, .default_value = 50},
     {.virt_addr = TIME_DOSING_PULSE, .data = 500, .default_value = 500},
     {.virt_addr = 0xFFFF, .data = 0, .default_value = 0},
@@ -21,7 +23,7 @@ static FEE_REC fee_rec[] = {
 static int32_t weight_temp;
 static int32_t stop_weight_temp;
 static int32_t time_dosing_pulse_temp;
-static int32_t hx_factor_temp;
+static float hx_factor_temp;
 
 void Settings_Init(void)
 {
@@ -35,7 +37,10 @@ void Settings_Init(void)
     weight_temp = fee_rec[WEIGHT].data;
     stop_weight_temp = fee_rec[STOP_BEFORE_TARGET_WEIGHT].data;
     time_dosing_pulse_temp = fee_rec[TIME_DOSING_PULSE].data;
-    hx_factor_temp = fee_rec[HX_FACTOR].data;
+    // Собираем биты float из двух записей.
+    const uint32_t bits = ((uint32_t)fee_rec[HIGH_HX_FACTOR].data << 16)
+        | fee_rec[LOW_HX_FACTOR].data;
+    memcpy(&hx_factor_temp, &bits, sizeof(hx_factor_temp));
 }
 
 typedef enum
@@ -48,9 +53,26 @@ typedef enum
 static SETTINGS_MAIN_NAV current_settings_main_nav = SETTINGS_MENU;
 static SETTING_FEATURE_ID current_feature_id = WEIGHT;
 
-static void Settings_Menu_Loop(void)
+static void Settings_Menu_Loop(const int8_t enc_delta, const uint8_t is_short)
 {
-    const uint8_t is_short = Enc_Button_Is_Short();
+    if (enc_delta != 0)
+    {
+        // Убираем HIGH_HX_FACTOR из индексов меню.
+        int16_t feature_temp = (int16_t)current_feature_id;
+        if (feature_temp > HIGH_HX_FACTOR) feature_temp--;
+        feature_temp += enc_delta;
+        while (feature_temp >= TIME_DOSING_PULSE)
+        {
+            feature_temp -= TIME_DOSING_PULSE;
+        }
+        while (feature_temp < 0)
+        {
+            feature_temp += TIME_DOSING_PULSE;
+        }
+        if (feature_temp >= HIGH_HX_FACTOR) feature_temp++;
+        current_feature_id = (SETTING_FEATURE_ID)feature_temp;
+    }
+    LCD_Update_Second_Row("");
     switch (current_feature_id)
     {
     case WEIGHT: LCD_Update_First_Row("WEIGHT");
@@ -61,10 +83,12 @@ static void Settings_Menu_Loop(void)
         break;
     case TIME_DOSING_PULSE: LCD_Update_First_Row("TIME DOSING PULSE");
         break;
+    default:
+        break;
     }
     if (is_short)
     {
-
+        current_settings_main_nav = SETTINGS_FEATURES;
     }
 }
 
@@ -161,6 +185,7 @@ static int32_t hx_zero;
 
 static void HX_FACTOR_Loop(const uint8_t is_short)
 {
+    LCD_Update_Second_Row("");
     switch (current_calibration_screen)
     {
     case PUSH:
@@ -180,12 +205,12 @@ static void HX_FACTOR_Loop(const uint8_t is_short)
         {
             LCD_Update_First_Row("TARE....");
             const int32_t raw_1kg = HX_Read_Average(HX_AVERAGE);
-            hx_factor_temp = (raw_1kg - hx_zero) / 1000;
-            FEE_Write(
-                HX_FACTOR,
-                (uint16_t)hx_factor_temp,
-                fee_rec
-            );
+            hx_factor_temp = (float)(raw_1kg - hx_zero) / 1000.0f;
+            if (hx_factor_temp == 0.0f) break;
+            uint32_t bits;
+            memcpy(&bits, &hx_factor_temp, sizeof(bits));
+            FEE_Write(LOW_HX_FACTOR, (uint16_t)bits, fee_rec);
+            FEE_Write(HIGH_HX_FACTOR, (uint16_t)(bits >> 16), fee_rec);
             current_calibration_screen = SAVE;
         };
         break;
@@ -211,6 +236,8 @@ static void Settings_Feature_Nav(const int8_t enc_delta, const uint8_t is_short)
         break;
     case TIME_DOSING_PULSE: Time_Dosing_Pulse_Loop(enc_delta, is_short);
         break;
+    default:
+        break;
     }
 
 
@@ -222,7 +249,7 @@ void Settings_Loop(void)
     const uint8_t is_short = Enc_Button_Is_Short();
     switch (current_settings_main_nav)
     {
-    case SETTINGS_MENU: Settings_Menu_Loop();
+    case SETTINGS_MENU: Settings_Menu_Loop(enc_delta, is_short);
         break;
     case SETTINGS_FEATURES: Settings_Feature_Nav(enc_delta, is_short);
         break;
