@@ -5,6 +5,7 @@
 
 #include "lcd.h"
 #include "fee.h"
+#include "doz_fee.h"
 #include "enc.h"
 #include "hx.h"
 
@@ -13,11 +14,11 @@
 #define HX_AVERAGE 5
 
 static FEE_REC fee_rec[] = {
-    {.virt_addr = WEIGHT, .data = 3000, .default_value = 3000},
+    {.virt_addr = FEE_WEIGHT, .data = 3000, .default_value = 3000},
     {.virt_addr = LOW_HX_FACTOR, .data = 0, .default_value = 0},
     {.virt_addr = HIGH_HX_FACTOR, .data = 0x3F80, .default_value = 0x3F80}, // 1.0f
-    {.virt_addr = STOP_BEFORE_TARGET_WEIGHT, .data = 50, .default_value = 50},
-    {.virt_addr = TIME_DOSING_PULSE, .data = 500, .default_value = 500},
+    {.virt_addr = FEE_STOP_BEFORE_TARGET_WEIGHT, .data = 50, .default_value = 50},
+    {.virt_addr = FEE_TIME_DOSING_PULSE, .data = 500, .default_value = 500},
     {.virt_addr = 0xFFFF, .data = 0, .default_value = 0},
 };
 static int32_t weight_temp;
@@ -34,9 +35,9 @@ void Settings_Init(void)
             fee_rec[i].default_value
         );
     }
-    weight_temp = fee_rec[WEIGHT].data;
-    stop_weight_temp = fee_rec[STOP_BEFORE_TARGET_WEIGHT].data;
-    time_dosing_pulse_temp = fee_rec[TIME_DOSING_PULSE].data;
+    weight_temp = fee_rec[FEE_WEIGHT].data;
+    stop_weight_temp = fee_rec[FEE_STOP_BEFORE_TARGET_WEIGHT].data;
+    time_dosing_pulse_temp = fee_rec[FEE_TIME_DOSING_PULSE].data;
     // Собираем биты float из двух записей.
     const uint32_t bits = ((uint32_t)fee_rec[HIGH_HX_FACTOR].data << 16)
         | fee_rec[LOW_HX_FACTOR].data;
@@ -57,19 +58,16 @@ static void Settings_Menu_Loop(const int8_t enc_delta, const uint8_t is_short)
 {
     if (enc_delta != 0)
     {
-        // Убираем HIGH_HX_FACTOR из индексов меню.
         int16_t feature_temp = (int16_t)current_feature_id;
-        if (feature_temp > HIGH_HX_FACTOR) feature_temp--;
         feature_temp += enc_delta;
-        while (feature_temp >= TIME_DOSING_PULSE)
+        while (feature_temp >= COUNT_SETTING_FEATURES)
         {
-            feature_temp -= TIME_DOSING_PULSE;
+            feature_temp -= COUNT_SETTING_FEATURES;
         }
         while (feature_temp < 0)
         {
-            feature_temp += TIME_DOSING_PULSE;
+            feature_temp += COUNT_SETTING_FEATURES;
         }
-        if (feature_temp >= HIGH_HX_FACTOR) feature_temp++;
         current_feature_id = (SETTING_FEATURE_ID)feature_temp;
     }
     LCD_Update_Second_Row("");
@@ -115,7 +113,7 @@ static void Weight_Loop(const int8_t enc_delta, const uint8_t is_short)
 
     if (is_short)
     {
-        FEE_Write(WEIGHT, (uint16_t)weight_temp, fee_rec);
+        FEE_Write(FEE_WEIGHT, (uint16_t)weight_temp, fee_rec);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
@@ -138,7 +136,7 @@ static void Stop_Before_Target_Weight_Loop(const int8_t enc_delta, const uint8_t
 
     if (is_short)
     {
-        FEE_Write(STOP_BEFORE_TARGET_WEIGHT, (uint16_t)stop_weight_temp, fee_rec);
+        FEE_Write(FEE_STOP_BEFORE_TARGET_WEIGHT, (uint16_t)stop_weight_temp, fee_rec);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
@@ -168,7 +166,7 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
 
     if (is_short)
     {
-        FEE_Write(TIME_DOSING_PULSE, (uint16_t)time_dosing_pulse_temp, fee_rec);
+        FEE_Write(FEE_TIME_DOSING_PULSE, (uint16_t)time_dosing_pulse_temp, fee_rec);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
