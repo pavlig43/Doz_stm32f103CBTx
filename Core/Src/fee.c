@@ -1,5 +1,6 @@
 #include "fee.h"
 #include <stdint.h>
+#include <string.h>
 
 #include "stm32f103xb.h"
 

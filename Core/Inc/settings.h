@@ -8,5 +8,5 @@ typedef enum
     TIME_DOSING_PULSE,
     COUNT_SETTING_FEATURES,
 }SETTING_FEATURE_ID;
-void Settings_Init(void);
+
 void Settings_Loop(void);

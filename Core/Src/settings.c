@@ -13,36 +13,10 @@
 #define STOP_WEIGHT_STEP 10
 #define HX_AVERAGE 5
 
-static FEE_REC fee_rec[] = {
-    {.virt_addr = FEE_WEIGHT, .data = 3000, .default_value = 3000},
-    {.virt_addr = LOW_HX_FACTOR, .data = 0, .default_value = 0},
-    {.virt_addr = HIGH_HX_FACTOR, .data = 0x3F80, .default_value = 0x3F80}, // 1.0f
-    {.virt_addr = FEE_STOP_BEFORE_TARGET_WEIGHT, .data = 50, .default_value = 50},
-    {.virt_addr = FEE_TIME_DOSING_PULSE, .data = 500, .default_value = 500},
-    {.virt_addr = 0xFFFF, .data = 0, .default_value = 0},
-};
-static int32_t weight_temp;
-static int32_t stop_weight_temp;
-static int32_t time_dosing_pulse_temp;
-static float hx_factor_temp;
 
-void Settings_Init(void)
-{
-    for (uint8_t i = 0; fee_rec[i].virt_addr != 0xFFFF; i++)
-    {
-        fee_rec[i] = FEE_Read(
-            fee_rec[i].virt_addr,
-            fee_rec[i].default_value
-        );
-    }
-    weight_temp = fee_rec[FEE_WEIGHT].data;
-    stop_weight_temp = fee_rec[FEE_STOP_BEFORE_TARGET_WEIGHT].data;
-    time_dosing_pulse_temp = fee_rec[FEE_TIME_DOSING_PULSE].data;
-    // Собираем биты float из двух записей.
-    const uint32_t bits = ((uint32_t)fee_rec[HIGH_HX_FACTOR].data << 16)
-        | fee_rec[LOW_HX_FACTOR].data;
-    memcpy(&hx_factor_temp, &bits, sizeof(hx_factor_temp));
-}
+
+
+
 
 typedef enum
 {
@@ -59,7 +33,7 @@ static void Settings_Menu_Loop(const int8_t enc_delta, const uint8_t is_short)
     if (enc_delta != 0)
     {
         int16_t feature_temp = (int16_t)current_feature_id;
-        feature_temp += enc_delta;
+        feature_temp = (int16_t)(feature_temp + enc_delta);
         while (feature_temp >= COUNT_SETTING_FEATURES)
         {
             feature_temp -= COUNT_SETTING_FEATURES;

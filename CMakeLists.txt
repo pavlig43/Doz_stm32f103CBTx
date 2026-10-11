@@ -52,6 +52,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         Core/Inc/settings.h
         Core/Src/settings.c
         Core/Inc/hx.h
+        Core/Src/hx.c
+        Core/Src/doz_fee.c
 )
 
 # Add STM32CubeMX generated sources

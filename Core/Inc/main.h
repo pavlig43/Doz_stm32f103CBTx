@@ -63,6 +63,10 @@ void Error_Handler(void);
 #define poten_GPIO_Port GPIOA
 #define Motor_Pin GPIO_PIN_9
 #define Motor_GPIO_Port GPIOA
+#define DOUT_Pin GPIO_PIN_10
+#define DOUT_GPIO_Port GPIOA
+#define SCK_Pin GPIO_PIN_11
+#define SCK_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
