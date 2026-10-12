@@ -128,9 +128,10 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
             time_dosing_pulse_temp = 0;
         }
     }
-    char buf[11];
-    sprintf(
+    char buf[17];
+    snprintf(
         buf,
+        sizeof(buf),
         "%ld.%ld",
         time_dosing_pulse_temp / 1000,
         time_dosing_pulse_temp % 1000 / 100
@@ -148,12 +149,35 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
 typedef enum
 {
     PUSH,
+    READ_ZERO,
     PUT_1,
+    READ_1KG,
     SAVE
 } CALIBRATION_SCREEN;
 
 static CALIBRATION_SCREEN current_calibration_screen = PUSH;
 static int32_t hx_zero;
+static int64_t hx_sum;
+static uint8_t hx_sample_count;
+
+static bool Calibration_Read_Average(int32_t *average)
+{
+    int32_t raw;
+    if (!HX_Read(&raw))
+    {
+        return false;
+    }
+
+    hx_sum += raw;
+    hx_sample_count++;
+    if (hx_sample_count < HX_AVERAGE)
+    {
+        return false;
+    }
+
+    *average = (int32_t)(hx_sum / HX_AVERAGE);
+    return true;
+}
 
 static void HX_FACTOR_Loop(const uint8_t is_short)
 {
@@ -165,27 +189,49 @@ static void HX_FACTOR_Loop(const uint8_t is_short)
         if (is_short)
         {
 
-            LCD_Update_First_Row("TARE....");
-            hx_zero = HX_Read_Average(HX_AVERAGE);
-            current_calibration_screen = PUT_1;
+            hx_sum = 0;
+            hx_sample_count = 0;
+            current_calibration_screen = READ_ZERO;
 
+        }
+        break;
+    case READ_ZERO:
+        LCD_Update_First_Row("TARE....");
+        if (Calibration_Read_Average(&hx_zero))
+        {
+            current_calibration_screen = PUT_1;
         }
         break;
     case PUT_1:
         LCD_Update_First_Row("PUT 1 KG And PUSH");
         if (is_short)
         {
-            LCD_Update_First_Row("TARE....");
-            const int32_t raw_1kg = HX_Read_Average(HX_AVERAGE);
-            hx_factor_temp = (float)(raw_1kg - hx_zero) / 1000.0f;
-            if (hx_factor_temp == 0.0f) break;
+            hx_sum = 0;
+            hx_sample_count = 0;
+            current_calibration_screen = READ_1KG;
+        }
+        break;
+    case READ_1KG:
+    {
+        LCD_Update_First_Row("READ 1 KG....");
+        int32_t raw_1kg;
+        if (Calibration_Read_Average(&raw_1kg))
+        {
+            const float new_factor = (float)(raw_1kg - hx_zero) / 1000.0f;
+            if (new_factor == 0.0f)
+            {
+                current_calibration_screen = PUT_1;
+                break;
+            }
+            hx_factor_temp = new_factor;
             uint32_t bits;
             memcpy(&bits, &hx_factor_temp, sizeof(bits));
             FEE_Write(LOW_HX_FACTOR, (uint16_t)bits, fee_rec);
             FEE_Write(HIGH_HX_FACTOR, (uint16_t)(bits >> 16), fee_rec);
             current_calibration_screen = SAVE;
-        };
+        }
         break;
+    }
 
     case SAVE: LCD_Update_First_Row("ALL OK, PUSH");
         if (is_short)

@@ -45,7 +45,7 @@ uint32_t static last_pressed_time = 0;
 
 void Enc_Button_Loop(void)
 {
-    if (HAL_GPIO_ReadPin(button_GPIO_Port, button_Pin) == GPIO_PIN_RESET &&
+    if (HAL_GPIO_ReadPin(Enc_But_GPIO_Port, Enc_But_Pin) == GPIO_PIN_RESET &&
         HAL_GetTick() - pressed_time >= LONG_TIME && !is_long_handle)
     {
         is_long_done = 1;
@@ -70,7 +70,7 @@ uint8_t Enc_Button_Is_Short(void)
 
 void HAL_GPIO_EXTI_Callback(const uint16_t GPIO_Pin)
 {
-    if (GPIO_Pin == button_Pin)
+    if (GPIO_Pin == Enc_But_Pin)
     {
         const uint32_t now = HAL_GetTick();
         if (now - last_pressed_time < 50) // debounce
@@ -79,7 +79,7 @@ void HAL_GPIO_EXTI_Callback(const uint16_t GPIO_Pin)
         }
         last_pressed_time = now;
 
-        if (HAL_GPIO_ReadPin(button_GPIO_Port, button_Pin) == GPIO_PIN_RESET)
+        if (HAL_GPIO_ReadPin(Enc_But_GPIO_Port, Enc_But_Pin) == GPIO_PIN_RESET)
         {
             pressed_time = now;
             is_long_handle = 0;
