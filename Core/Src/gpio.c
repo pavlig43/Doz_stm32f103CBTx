@@ -51,7 +51,8 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Motor_Pin|SCK_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Motor_GPIO_Port, Motor_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(SCK_GPIO_Port, SCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : Enc_But_Pin */
   GPIO_InitStruct.Pin = Enc_But_Pin;

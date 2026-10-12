@@ -27,6 +27,7 @@ static Feature feature = WORK;
 
 static void Menu_Loop(void)
 {
+    LCD_Update_Second_Row("");
     const int8_t enc_delta = Enc_Get_Delta(); // сколько повернули энкодер
 
 

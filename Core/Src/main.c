@@ -25,6 +25,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "app.h"
+#include "doz_fee.h"
+#include "enc.h"
+#include "hx.h"
+#include "lcd.h"
+#include "motor.h"
 
 /* USER CODE END Includes */
 
@@ -94,6 +100,17 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  Motor_Stop();
+  if (HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  FEE_Settings_Init();
+  HX_Init();
+  LCD_Init();
+  LCD_Update_First_Row("WORK");
+  LCD_Update_Second_Row("");
+  Enc_Init();
 
   /* USER CODE END 2 */
 
@@ -104,6 +121,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    Enc_Update_Loop();
+    Enc_Button_Loop();
+    App_Loop();
+    LCD_Loop();
+    HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }

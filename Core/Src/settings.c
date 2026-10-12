@@ -157,7 +157,7 @@ typedef enum
 
 static CALIBRATION_SCREEN current_calibration_screen = PUSH;
 static int32_t hx_zero;
-static int64_t hx_sum;
+static int32_t hx_sum;
 static uint8_t hx_sample_count;
 
 static bool Calibration_Read_Average(int32_t *average)

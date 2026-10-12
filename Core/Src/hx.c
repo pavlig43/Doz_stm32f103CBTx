@@ -1,4 +1,6 @@
 #include "hx.h"
+#include <limits.h>
+#include <math.h>
 
 #include "doz_fee.h"
 #include "fee.h"
@@ -10,6 +12,7 @@
 #define AVERAGE_SAMPLES 5
 static int32_t samples[AVERAGE_SAMPLES];
 static uint8_t sample_index = 0;
+static uint8_t sample_count = 0;
 static int32_t tare;
 
 void HX_Init(void)
@@ -78,6 +81,10 @@ int32_t HX_Get_Average_5(void)
     {
         samples[sample_index] = value;
         sample_index++;
+        if (sample_count < AVERAGE_SAMPLES)
+        {
+            sample_count++;
+        }
 
         if (sample_index >= AVERAGE_SAMPLES)
         {
@@ -85,14 +92,14 @@ int32_t HX_Get_Average_5(void)
         }
     }
 
-    int64_t sum = 0;
+    int32_t sum = 0;
 
     for (uint8_t i = 0; i < AVERAGE_SAMPLES; i++)
     {
         sum += samples[i];
     }
 
-    return (int32_t)(sum / AVERAGE_SAMPLES);
+    return sample_count == 0 ? 0 : (int32_t)(sum / sample_count);
 }
 void HX_Tare(void)
 {
@@ -101,5 +108,13 @@ void HX_Tare(void)
 
 int32_t HX_Get_Grams(void)
 {
-    return (int32_t)((HX_Get_Average_5() - tare) / hx_factor_temp);
+    const int32_t average = HX_Get_Average_5();
+    if (!isfinite(hx_factor_temp) || hx_factor_temp == 0.0f)
+    {
+        return 0;
+    }
+    const float grams = (average - tare) / hx_factor_temp;
+    if (grams >= (float)INT32_MAX) return INT32_MAX;
+    if (grams <= (float)INT32_MIN) return INT32_MIN;
+    return (int32_t)grams;
 }
