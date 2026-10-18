@@ -9,6 +9,9 @@
 /.vscode/
 
 # Temporary files
+# Python bytecode cache
+__pycache__/
+*.pyc
 *.log
 *.tmp
 *.bak

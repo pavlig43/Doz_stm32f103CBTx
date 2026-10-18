@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "adc.h"
 #include "i2c.h"
 #include "tim.h"
 #include "gpio.h"
@@ -31,6 +30,7 @@
 #include "hx.h"
 #include "lcd.h"
 #include "motor.h"
+#include "rgb.h"
 
 /* USER CODE END Includes */
 
@@ -95,21 +95,15 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
   MX_I2C1_Init();
   MX_TIM2_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  Motor_Stop();
-  if (HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
+
+  RGB_Stop();
   FEE_Settings_Init();
   HX_Init();
   LCD_Init();
-  LCD_Update_First_Row("WORK");
-  LCD_Update_Second_Row("");
   Enc_Init();
 
   /* USER CODE END 2 */
@@ -125,7 +119,6 @@ int main(void)
     Enc_Button_Loop();
     App_Loop();
     LCD_Loop();
-    HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }
@@ -138,7 +131,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -165,12 +157,6 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }

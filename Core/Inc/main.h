@@ -59,8 +59,12 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Enc_But_Pin GPIO_PIN_13
 #define Enc_But_GPIO_Port GPIOC
-#define poten_Pin GPIO_PIN_5
-#define poten_GPIO_Port GPIOA
+#define R_Pin GPIO_PIN_3
+#define R_GPIO_Port GPIOA
+#define G_Pin GPIO_PIN_4
+#define G_GPIO_Port GPIOA
+#define B_Pin GPIO_PIN_5
+#define B_GPIO_Port GPIOA
 #define Motor_Pin GPIO_PIN_9
 #define Motor_GPIO_Port GPIOA
 #define DOUT_Pin GPIO_PIN_10

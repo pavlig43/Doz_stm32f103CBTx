@@ -1,9 +1,7 @@
 #include "hx.h"
 #include <limits.h>
 #include <math.h>
-
-#include "doz_fee.h"
-#include "fee.h"
+#include <string.h>
 
 #include "main.h"
 #include "stdbool.h"
@@ -14,6 +12,7 @@ static int32_t samples[AVERAGE_SAMPLES];
 static uint8_t sample_index = 0;
 static uint8_t sample_count = 0;
 static int32_t tare;
+static bool tare_discard_sample;
 
 void HX_Init(void)
 {
@@ -45,7 +44,7 @@ bool HX_Read(int32_t* raw)
     }
     uint32_t value = 0;
     // Запоминаем, были ли прерывания уже запрещены.
-    uint32_t irq_state = __get_PRIMASK();
+    const uint32_t irq_state = __get_PRIMASK();
     __disable_irq();
     HX_Delay();
     for (uint8_t i = 0; i < 24; i++)
@@ -99,22 +98,47 @@ int32_t HX_Get_Average_5(void)
         sum += samples[i];
     }
 
-    return sample_count == 0 ? 0 : (int32_t)(sum / sample_count);
-}
-void HX_Tare(void)
-{
-    tare = HX_Get_Average_5();
+    return sample_count == 0 ? 0 : sum / sample_count;
 }
 
-int32_t HX_Get_Grams(void)
+void HX_Tare_Start(void)
+{
+    memset(samples, 0, sizeof(samples));
+    sample_index = 0;
+    sample_count = 0;
+    tare_discard_sample = true;
+}
+
+bool HX_Tare(void)
+{
+    if (tare_discard_sample)
+    {
+        // Отбрасываем результат, который HX711 мог подготовить до нажатия кнопки.
+        int32_t discarded;
+        if (HX_Read(&discarded))
+        {
+            tare_discard_sample = false;
+        }
+        return false;
+    }
+
+    const int32_t average = HX_Get_Average_5();
+    if (sample_count < AVERAGE_SAMPLES)
+    {
+        return false;
+    }
+    tare = average;
+    return true;
+}
+
+int32_t HX_Get_Grams(int32_t factor)
 {
     const int32_t average = HX_Get_Average_5();
-    if (!isfinite(hx_factor_temp) || hx_factor_temp == 0.0f)
+    if (factor == 0)
     {
         return 0;
     }
-    const float grams = (average - tare) / hx_factor_temp;
-    if (grams >= (float)INT32_MAX) return INT32_MAX;
-    if (grams <= (float)INT32_MIN) return INT32_MIN;
-    return (int32_t)grams;
+
+    const int32_t grams = (average - tare) * 100 / factor;
+    return grams;
 }

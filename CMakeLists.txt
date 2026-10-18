@@ -33,31 +33,36 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
-        Core/Inc/lcd.h
-        Core/Src/lcd.c
-        Core/Inc/enc.h
-        Core/Src/enc.c
-        Core/Inc/app.h
-        Core/Src/app.c
-        Core/Inc/motor.h
-        Core/Src/motor.c
-        Core/Inc/utils.h
-        Core/Src/utils.c
-        Core/Inc/poten.h
-        Core/Src/poten.c
-        Core/Inc/fee.h
-        Core/Src/fee.c
-        Core/Inc/work.h
-        Core/Src/work.c
-        Core/Inc/settings.h
-        Core/Src/settings.c
-        Core/Inc/hx.h
-        Core/Src/hx.c
-        Core/Src/doz_fee.c
+        app/app.h
+        app/app.c
+        app/work/work.h
+        app/work/work.c
+        app/settings/settings.h
+        app/settings/settings.c
+        app/doz_fee/doz_fee.h
+        app/doz_fee/doz_fee.c
+        lib/lcd/lcd.h
+        lib/lcd/lcd.c
+        lib/enc/enc.h
+        lib/enc/enc.c
+        lib/motor/motor.h
+        lib/motor/motor.c
+        lib/utils/utils.h
+        lib/utils/utils.c
+        lib/poten/poten.h
+        lib/poten/poten.c
+        lib/fee/fee.h
+        lib/fee/fee.c
+        lib/hx/hx.h
+        lib/hx/hx.c
+        app/rgb/rgb.h
+        app/rgb/rgb.c
 )
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+
+include(cmake/proteus-debug.cmake)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -71,7 +76,18 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+    app
+    app/work
+    app/settings
+    app/doz_fee
+    app/rgb
+    lib/enc
+    lib/lcd
+    lib/hx
+    lib/fee
+    lib/motor
+    lib/poten
+    lib/utils
 )
 
 # Add project symbols (macros)

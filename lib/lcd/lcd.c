@@ -37,8 +37,8 @@ static uint32_t last_updated = 0;
 
 static void LCD_Post_CMD(const uint8_t cmd)
 {
-    uint8_t cmd_u = cmd & LCD_HIGH_NIBBLE_MASK;
-    uint8_t cmd_l = (cmd << 4) & LCD_HIGH_NIBBLE_MASK;
+    const uint8_t cmd_u = cmd & LCD_HIGH_NIBBLE_MASK;
+    const uint8_t cmd_l = (cmd << 4) & LCD_HIGH_NIBBLE_MASK;
 
     uint8_t data[4];
     data[0] = cmd_u | LCD_CMD_EN_ON;
@@ -73,16 +73,34 @@ static void LCD_Set_Cursor(const uint8_t row, const uint8_t col)
     LCD_Post_CMD(place);
 };
 
+static void LCD_Post_Init_Port(const uint8_t port)
+{
+    uint8_t data = port;
+    HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDRESS, &data, 1, 100);
+}
+
+static void LCD_Post_Init_Nibble(const uint8_t nibble)
+{
+    uint8_t data[3];
+    data[0] = (nibble & LCD_HIGH_NIBBLE_MASK) | LCD_CMD_OFF;
+    data[1] = (nibble & LCD_HIGH_NIBBLE_MASK) | LCD_CMD_EN_ON;
+    data[2] = (nibble & LCD_HIGH_NIBBLE_MASK) | LCD_CMD_OFF;
+    HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDRESS, data, 3, 100);
+}
+
 void LCD_Init(void)
 {
     HAL_Delay(50);
-    LCD_Post_CMD(LCD_INIT_8BIT);
-    HAL_Delay(5);
-    LCD_Post_CMD(LCD_INIT_8BIT);
+    LCD_Post_Init_Port(LCD_CMD_OFF);
     HAL_Delay(1);
-    LCD_Post_CMD(LCD_INIT_8BIT);
+    LCD_Post_Init_Nibble(LCD_INIT_8BIT);
+    HAL_Delay(5);
+    LCD_Post_Init_Nibble(LCD_INIT_8BIT);
+    HAL_Delay(1);
+    LCD_Post_Init_Nibble(LCD_INIT_8BIT);
     HAL_Delay(10);
-    LCD_Post_CMD(LCD_INIT_4BIT);
+    LCD_Post_Init_Nibble(LCD_INIT_4BIT);
+    HAL_Delay(1);
 
     LCD_Post_CMD(LCD_FUNCTION_SET);
     HAL_Delay(1);
@@ -131,11 +149,11 @@ void LCD_Loop(void)
         last_updated = HAL_GetTick();
     }
 }
-void LCD_Update_Row_Number(const uint8_t row, const uint16_t value)
+void LCD_Update_Row_Number(const uint8_t row, const int16_t value)
 {
     char buf[17];
 
-    sprintf(buf, "%u", (unsigned)value);
+    sprintf(buf, "%d", (int)value);
 
     if (row == 1)
     {

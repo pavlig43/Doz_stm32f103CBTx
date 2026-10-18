@@ -76,9 +76,10 @@ static void Feature_Nav(void)
 
 void App_Loop(void)
 {
-    uint8_t is_long = Enc_Button_Is_Long();
+    const uint8_t is_long = Enc_Button_Is_Long();
     if (is_long)
     {
+        Work_Stop();
         LCD_Update_First_Row("");
         LCD_Update_Second_Row("");
         screen = SCREEN_MENU;

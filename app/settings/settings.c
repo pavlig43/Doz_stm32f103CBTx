@@ -8,15 +8,15 @@
 #include "doz_fee.h"
 #include "enc.h"
 #include "hx.h"
+#include "rgb.h"
 
 #define MIN_WEIGHT_STEP 50
 #define STOP_WEIGHT_STEP 10
 #define HX_AVERAGE 5
 
-
-
-
-
+static int32_t weight_temp;
+static int32_t stop_weight_temp;
+static int32_t time_dosing_pulse_temp;
 
 typedef enum
 {
@@ -60,6 +60,9 @@ static void Settings_Menu_Loop(const int8_t enc_delta, const uint8_t is_short)
     }
     if (is_short)
     {
+        weight_temp = settings_ram[FEE_WEIGHT].data;
+        stop_weight_temp = settings_ram[FEE_STOP_BEFORE_TARGET_WEIGHT].data;
+        time_dosing_pulse_temp = settings_ram[FEE_TIME_DOSING_PULSE].data;
         current_settings_main_nav = SETTINGS_FEATURES;
     }
 }
@@ -77,17 +80,17 @@ static void Weight_Loop(const int8_t enc_delta, const uint8_t is_short)
             weight_temp = MIN_WEIGHT_STEP;
         }
 
-        if (weight_temp > 65000)
+        if (weight_temp > 5000)
         {
-            weight_temp = 65000;
+            weight_temp = 5000;
         }
     }
 
-    LCD_Update_Row_Number(2, (uint16_t)weight_temp);
+    LCD_Update_Row_Number(2, (int16_t)weight_temp);
 
     if (is_short)
     {
-        FEE_Write(FEE_WEIGHT, (uint16_t)weight_temp, fee_rec);
+        FEE_Write(FEE_WEIGHT, (uint16_t)weight_temp, settings_ram);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
@@ -106,11 +109,11 @@ static void Stop_Before_Target_Weight_Loop(const int8_t enc_delta, const uint8_t
         }
     }
 
-    LCD_Update_Row_Number(2, (uint16_t)stop_weight_temp);
+    LCD_Update_Row_Number(2, (int16_t)stop_weight_temp);
 
     if (is_short)
     {
-        FEE_Write(FEE_STOP_BEFORE_TARGET_WEIGHT, (uint16_t)stop_weight_temp, fee_rec);
+        FEE_Write(FEE_STOP_BEFORE_TARGET_WEIGHT, (uint16_t)stop_weight_temp, settings_ram);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
@@ -141,7 +144,7 @@ static void Time_Dosing_Pulse_Loop(const int8_t enc_delta, const uint8_t is_shor
 
     if (is_short)
     {
-        FEE_Write(FEE_TIME_DOSING_PULSE, (uint16_t)time_dosing_pulse_temp, fee_rec);
+        FEE_Write(FEE_TIME_DOSING_PULSE, (uint16_t)time_dosing_pulse_temp, settings_ram);
         current_settings_main_nav = SETTINGS_MENU;
     }
 }
@@ -196,6 +199,7 @@ static void HX_FACTOR_Loop(const uint8_t is_short)
         }
         break;
     case READ_ZERO:
+        RGB_Blue();
         LCD_Update_First_Row("TARE....");
         if (Calibration_Read_Average(&hx_zero))
         {
@@ -203,6 +207,7 @@ static void HX_FACTOR_Loop(const uint8_t is_short)
         }
         break;
     case PUT_1:
+        RGB_Stop();
         LCD_Update_First_Row("PUT 1 KG And PUSH");
         if (is_short)
         {
@@ -217,17 +222,16 @@ static void HX_FACTOR_Loop(const uint8_t is_short)
         int32_t raw_1kg;
         if (Calibration_Read_Average(&raw_1kg))
         {
-            const float new_factor = (float)(raw_1kg - hx_zero) / 1000.0f;
-            if (new_factor == 0.0f)
+            const int32_t new_factor = (raw_1kg - hx_zero) / 10;
+            if (new_factor == 0)
             {
                 current_calibration_screen = PUT_1;
                 break;
             }
-            hx_factor_temp = new_factor;
             uint32_t bits;
-            memcpy(&bits, &hx_factor_temp, sizeof(bits));
-            FEE_Write(LOW_HX_FACTOR, (uint16_t)bits, fee_rec);
-            FEE_Write(HIGH_HX_FACTOR, (uint16_t)(bits >> 16), fee_rec);
+            memcpy(&bits, &new_factor, sizeof(bits));
+            FEE_Write(LOW_HX_FACTOR, (uint16_t)bits, settings_ram);
+            FEE_Write(HIGH_HX_FACTOR, (uint16_t)(bits >> 16), settings_ram);
             current_calibration_screen = SAVE;
         }
         break;
