@@ -8,9 +8,9 @@
 #include "lcd.h"
 #include "motor.h"
 #include "rgb.h"
-#include "stm32f1xx_hal.h"
+#include "tmr.h"
 
-#define PULSE_PAUSE_MS 500u
+#define PULSE_PAUSE_MS 1000u
 
 typedef enum
 {
@@ -22,7 +22,8 @@ typedef enum
 } WORK_STATE;
 
 static WORK_STATE work_state = WAIT_PUSH;
-static uint32_t last_time_dosing_pulse;
+static Tmr dosing_pause_timer = {.period = PULSE_PAUSE_MS};
+static Tmr dosing_pulse_timer;
 
 void Work_Stop(void)
 {
@@ -62,16 +63,16 @@ static void Dosing_Loop(void)
         else
         {
             Motor_Stop();
-            last_time_dosing_pulse = HAL_GetTick();
+            Tmr_Reset(&dosing_pause_timer);
             work_state = PULSE_PAUSE;
         }
         break;
 
     case PULSE_PAUSE:
         RGB_Pulse_Yellow();
-        if (HAL_GetTick() - last_time_dosing_pulse >= PULSE_PAUSE_MS)
+        if (Tmr_Ready(&dosing_pause_timer))
         {
-            last_time_dosing_pulse = HAL_GetTick();
+            Tmr_Reset(&dosing_pulse_timer);
             work_state = PULSE_RUN;
             Motor_Run();
         }
@@ -79,10 +80,11 @@ static void Dosing_Loop(void)
 
     case PULSE_RUN:
         RGB_Pulse_Yellow();
-        if (HAL_GetTick() - last_time_dosing_pulse >= time_dosing_pulse)
+        dosing_pulse_timer.period = time_dosing_pulse;
+        if (Tmr_Ready(&dosing_pulse_timer))
         {
             Motor_Stop();
-            last_time_dosing_pulse = HAL_GetTick();
+            Tmr_Reset(&dosing_pause_timer);
             work_state = PULSE_PAUSE;
         }
         break;

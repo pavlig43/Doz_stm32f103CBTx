@@ -49,6 +49,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         lib/motor/motor.c
         lib/utils/utils.h
         lib/utils/utils.c
+        lib/tmr/tmr.h
+        lib/tmr/tmr.c
         lib/poten/poten.h
         lib/poten/poten.c
         lib/fee/fee.h
@@ -61,8 +63,6 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
-
-include(cmake/proteus-debug.cmake)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -88,6 +88,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     lib/motor
     lib/poten
     lib/utils
+    lib/tmr
 )
 
 # Add project symbols (macros)

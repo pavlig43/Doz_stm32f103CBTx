@@ -53,8 +53,8 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, R_Pin|G_Pin|B_Pin|SCK_Pin, GPIO_PIN_RESET);
 
-  /* Низкий уровень включает мотор, поэтому при настройке GPIO задаём высокий. */
-  HAL_GPIO_WritePin(Motor_GPIO_Port, Motor_Pin, GPIO_PIN_SET);
+  /* При старте мотор выключен: низкий уровень. */
+  HAL_GPIO_WritePin(Motor_GPIO_Port, Motor_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : Enc_But_Pin */
   GPIO_InitStruct.Pin = Enc_But_Pin;

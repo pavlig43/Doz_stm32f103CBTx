@@ -5,6 +5,7 @@
 
 #include "i2c.h"
 #include "stm32f1xx.h"
+#include "tmr.h"
 
 #define LCD_ADDRESS (0x27<<1)
 
@@ -26,14 +27,15 @@
 #define LCD_INIT_8BIT        0x30
 #define LCD_INIT_4BIT        0x20
 
-#define update_time 200
+// Прежнее условие > 200 мс: обновлять начиная с 201 мс.
+#define LCD_UPDATE_INTERVAL_MS 201u
 
 static char first_row[17];
 static char second_row[17];
 
 static char first_row_temp[17];
 static char second_row_temp[17];
-static uint32_t last_updated = 0;
+static Tmr update_timer = {.period = LCD_UPDATE_INTERVAL_MS};
 
 static void LCD_Post_CMD(const uint8_t cmd)
 {
@@ -131,7 +133,7 @@ void LCD_Update_Second_Row(const char *second_row_text)
 
 void LCD_Loop(void)
 {
-    if ((HAL_GetTick() - last_updated) > update_time)
+    if (Tmr_Ready(&update_timer))
     {
         if (strcmp(first_row_temp, first_row) != 0)
         {
@@ -146,7 +148,8 @@ void LCD_Loop(void)
             LCD_Post_Data(second_row_temp);
             sprintf(second_row, "%s", second_row_temp);
         }
-        last_updated = HAL_GetTick();
+        // Следующий период начинается после передачи строк по I2C.
+        Tmr_Reset(&update_timer);
     }
 }
 void LCD_Update_Row_Number(const uint8_t row, const int16_t value)

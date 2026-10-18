@@ -100,6 +100,7 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  Motor_Stop();
   RGB_Stop();
   FEE_Settings_Init();
   HX_Init();
