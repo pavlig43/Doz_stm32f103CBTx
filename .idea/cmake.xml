@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="F103 Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="STM32" GENERATION_OPTIONS="--preset Debug" GENERATION_DIR="$PROJECT_DIR$/stm32f103/build/CLion-Debug" />
+      <configuration PROFILE_NAME="F103 Release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="STM32" GENERATION_OPTIONS="--preset Release" GENERATION_DIR="$PROJECT_DIR$/stm32f103/build/CLion-Release" />
+      <configuration PROFILE_NAME="F030 Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="STM32" GENERATION_OPTIONS="--preset F030-Debug" GENERATION_DIR="$PROJECT_DIR$/stm32f030/build/CLion-Debug" />
+      <configuration PROFILE_NAME="F030 Release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="STM32" GENERATION_OPTIONS="--preset F030-Release" GENERATION_DIR="$PROJECT_DIR$/stm32f030/build/CLion-Release" />
+    </configurations>
+  </component>
+</project>

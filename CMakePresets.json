@@ -4,35 +4,53 @@
         {
             "name": "default",
             "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-		    "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
-            "cacheVariables": {
-            }
+            "generator": "Ninja"
         },
         {
             "name": "Debug",
             "inherits": "default",
+            "binaryDir": "${sourceDir}/stm32f103/build/CLion-Debug",
+            "toolchainFile": "${sourceDir}/stm32f103/cmake/gcc-arm-none-eabi.cmake",
             "cacheVariables": {
+                "DOZ_MCU": "stm32f103",
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
             "name": "Release",
             "inherits": "default",
+            "binaryDir": "${sourceDir}/stm32f103/build/CLion-Release",
+            "toolchainFile": "${sourceDir}/stm32f103/cmake/gcc-arm-none-eabi.cmake",
             "cacheVariables": {
+                "DOZ_MCU": "stm32f103",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "F030-Debug",
+            "inherits": "default",
+            "binaryDir": "${sourceDir}/stm32f030/build/CLion-Debug",
+            "toolchainFile": "${sourceDir}/stm32f030/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "DOZ_MCU": "stm32f030",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "F030-Release",
+            "inherits": "default",
+            "binaryDir": "${sourceDir}/stm32f030/build/CLion-Release",
+            "toolchainFile": "${sourceDir}/stm32f030/cmake/gcc-arm-none-eabi.cmake",
+            "cacheVariables": {
+                "DOZ_MCU": "stm32f030",
                 "CMAKE_BUILD_TYPE": "Release"
             }
         }
     ],
     "buildPresets": [
-        {
-            "name": "Debug",
-            "configurePreset": "Debug"
-        },
-        {
-            "name": "Release",
-            "configurePreset": "Release"
-        }
+        { "name": "Debug", "configurePreset": "Debug" },
+        { "name": "Release", "configurePreset": "Release" },
+        { "name": "F030-Debug", "configurePreset": "F030-Debug" },
+        { "name": "F030-Release", "configurePreset": "F030-Release" }
     ]
 }

@@ -1,10 +1,8 @@
 #include "fee.h"
 #include <stdint.h>
-#include <string.h>
 
-#include "stm32f103xb.h"
+#include "main.h"
 
-#define EEPROM_START_ADDR  0x0800FC00U // страница 63
 #define EEPROM_PAGE_SIZE    0x400U //1 кб
 
 

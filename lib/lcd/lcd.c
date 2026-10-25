@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "i2c.h"
-#include "stm32f1xx.h"
+#include "main.h"
 #include "tmr.h"
 
 #define LCD_ADDRESS (0x27<<1)

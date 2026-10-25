@@ -1,6 +1,6 @@
 #include "tmr.h"
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 
 void Tmr_Reset(Tmr *timer)
 {

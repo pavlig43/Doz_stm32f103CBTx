@@ -1,11 +1,8 @@
 #include "hx.h"
-#include <limits.h>
-#include <math.h>
 #include <string.h>
 
 #include "main.h"
 #include "stdbool.h"
-#include "stm32f1xx_hal_gpio.h"
 #include "tim.h"
 #define AVERAGE_SAMPLES 5
 static int32_t samples[AVERAGE_SAMPLES];

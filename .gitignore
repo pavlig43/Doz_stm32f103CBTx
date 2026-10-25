@@ -1,12 +1,13 @@
 # Build output
-/build/
-/cmake-build-*/
-/CMakeUserPresets.json
-/compile_commands.json
+build/
+cmake-build-*/
+CMakeUserPresets.json
+compile_commands.json
 
 # Local IDE settings
-/.idea/
-/.vscode/
+.idea/*
+!.idea/cmake.xml
+.vscode/
 
 # Temporary files
 # Python bytecode cache

@@ -18,18 +18,18 @@ static GPIO_PinState button_stable = GPIO_PIN_SET;
 
 void Enc_Init(void)
 {
-    if (HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_ALL) != HAL_OK)
+    if (HAL_TIM_Encoder_Start(&ENC_TIMER,TIM_CHANNEL_ALL) != HAL_OK)
     {
         Error_Handler();
     }
-    last_cnt = __HAL_TIM_GET_COUNTER(&htim2);
+    last_cnt = __HAL_TIM_GET_COUNTER(&ENC_TIMER);
     button_changed_time = HAL_GetTick();
 };
 
 
 void Enc_Update_Loop(void)
 {
-    const uint16_t current_cnt = __HAL_TIM_GET_COUNTER(&htim2); // читаем счётчик
+    const uint16_t current_cnt = __HAL_TIM_GET_COUNTER(&ENC_TIMER); // читаем счётчик
     const int16_t diff_impulse = (int16_t)(current_cnt - last_cnt); // новые импульсы
     last_cnt = current_cnt; // сохраняем текущий счётчик
 
