@@ -1,0 +1,206 @@
+(footprint "USB_A_TH_MOLEX_67643_3910"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "USB Type A receptacle, Molex 67643-3910, shortened 14.20 mm body")
+	(tags "USB A Molex 67643-3910 through-hole")
+	(property "Reference" "J**"
+		(at 8.5459 -2.5224 90)
+		(layer "F.SilkS")
+		(uuid "a93e2434-eb83-45db-848b-a97d6c8ebeb3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "USB_A_TH_MOLEX_67643_3910"
+		(at 8.5459 -4.3004 90)
+		(layer "F.SilkS")
+		(uuid "f4375b7e-1884-49b2-a614-95b4967269d7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://www.molex.com/pdm_docs/sd/676433910_sd.pdf"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "18949f0e-3502-4fa3-8772-058dd933c9bc")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "USB Type A receptacle, Molex 67643-3910"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "360414a0-77a4-48bc-84ee-4d2327aa7d1d")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -3.7257 -1.185)
+		(end -3.7257 0.25)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "15ab486c-12a1-4dfd-b5ca-791ccbc6c104")
+	)
+	(fp_line
+		(start -3.7257 -1.185)
+		(end 10.739 -1.185)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f487c771-12d0-496d-b2dd-1be56bb48086")
+	)
+	(fp_line
+		(start -3.7257 5.17)
+		(end -3.7257 13.01)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "d2008d5d-1e2d-42aa-8ac2-dacc5307e1bd")
+	)
+	(fp_line
+		(start -3.7257 13.01)
+		(end 10.725 13.01)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c23be6aa-49ce-4c5a-9880-de090723d2b7")
+	)
+	(fp_line
+		(start 10.739 -1.185)
+		(end 10.739 0.25)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "a43e4739-0781-40ab-9aa7-1e83cf55ef70")
+	)
+	(fp_line
+		(start 10.739 5.17)
+		(end 10.739 13.039)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "515b791f-1bb8-4196-b6eb-b25ab01d7159")
+	)
+	(fp_line
+		(start -3.993 12.99)
+		(end 11.3744 12.99)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "Dwgs.User")
+		(uuid "12833e1b-9178-4a6e-b64c-b60151f0dac5")
+	)
+	(fp_rect
+		(start -3.1 -1.21)
+		(end 10.1 12.99)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "0e8d2552-7e4e-4503-9126-55092bb402d4")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 3.4999 1.355 0)
+		(layer "F.Fab")
+		(uuid "9b1c3004-1879-47db-9d93-844eeea94989")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 2.1 1.8)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "aa34552a-a142-4506-ab52-b0c3e26dc08b")
+	)
+	(pad "2" thru_hole rect
+		(at 2.5 0)
+		(size 1.7 1.7)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "7df6fd80-5b04-4e34-935c-2610fb10a0fe")
+	)
+	(pad "3" thru_hole rect
+		(at 4.5 0)
+		(size 1.7 1.7)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "7efca193-e703-42ae-a0a4-367cddd08b8a")
+	)
+	(pad "4" thru_hole rect
+		(at 7 0)
+		(size 2.1 1.8)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "5aa7ab58-82e2-48d7-afe6-f4b8ea11809b")
+	)
+	(pad "5" thru_hole circle
+		(at -3.07 2.71)
+		(size 4.7 4.7)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "5b501c01-80b0-4fab-9e64-2cbdd44d853d")
+	)
+	(pad "6" thru_hole circle
+		(at 10.07 2.71)
+		(size 4.7 4.7)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ae0c92d8-0159-4818-8cb2-e44ab07beae1")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/models/USB_A_TH_MOLEX_67643_3910.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

@@ -1,0 +1,4 @@
+# Preserve model bytes and PDF output across platforms.
+*.step -text
+*.stp -text
+*.pdf binary

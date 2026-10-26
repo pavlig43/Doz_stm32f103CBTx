@@ -1,0 +1,173 @@
+(footprint "ToggleSwitch_MTS-101_SPST"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -1.8 -7.5 0)
+		(layer "F.SilkS")
+		(uuid "b0aba999-d3da-4221-9382-e330a3ac8315")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "ToggleSwitch_MTS-101_SPST"
+		(at 0 7.5 0)
+		(layer "F.SilkS")
+		(uuid "a59ffcdc-bc62-4893-b3a3-cc962c966c4f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4482d0e9-febe-4309-afda-48400016eae9")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "63635a94-252c-46f0-959f-041d31ae0d33")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -3.8 -6.7)
+		(end 4.1 -6.7)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "a06b86ef-8bd1-4041-acbe-3d433fddc0b1")
+	)
+	(fp_line
+		(start -3.8 6.5)
+		(end -3.8 -6.7)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "69b5f8f1-d684-47ec-88fe-c495a76aff66")
+	)
+	(fp_line
+		(start 4.1 -6.7)
+		(end 4.1 6.5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "a9620703-fd5e-4048-aa21-f7040cb235d0")
+	)
+	(fp_line
+		(start 4.1 6.5)
+		(end -3.8 6.5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "5149672b-ab2d-4505-a1cb-4c08605629e4")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 3 0.05)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "70d4bb3c-0fcc-45fe-8ced-b887a0bec4cb")
+	)
+	(fp_line
+		(start -3.8 -6.7)
+		(end -3.8 6.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "ec806fd9-6fc1-4efd-ad7e-45d0da20d396")
+	)
+	(fp_line
+		(start 4.1 -6.7)
+		(end -3.8 -6.7)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "4d81f0a8-5b83-41e2-847f-837438ca3db7")
+	)
+	(fp_line
+		(start 4.1 -6.7)
+		(end 4.1 6.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c401d657-62de-407c-97fe-ee558101dc17")
+	)
+	(fp_line
+		(start 4.1 6.5)
+		(end -3.8 6.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "104641d8-9339-4a00-97e4-0ac8786ab7a4")
+	)
+	(pad "1" thru_hole rect
+		(at 0 -4.7)
+		(size 4.7 3.8)
+		(drill oval 2.2 0.7)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "d81500bd-fd86-46bf-81bf-0147ef4a4e0a")
+	)
+	(pad "2" thru_hole rect
+		(at 0 0)
+		(size 4.7 3.8)
+		(drill oval 2.2 0.7)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "82b56895-6a81-4863-bd23-d1bea1f345a7")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/models/ToggleSwitch_MTS-101_SPST.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

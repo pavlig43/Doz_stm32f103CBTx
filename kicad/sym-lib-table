@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "PCM_SparkFun-Capacitor") (type "KiCad") (uri "${KIPRJMOD}/libraries/PCM_SparkFun-Capacitor.kicad_sym") (options "") (descr "Project-local library"))
+  (lib (name "PCM_SparkFun-Resistor") (type "KiCad") (uri "${KIPRJMOD}/libraries/PCM_SparkFun-Resistor.kicad_sym") (options "") (descr "Project-local library"))
+  (lib (name "TrueLib") (type "KiCad") (uri "${KIPRJMOD}/libraries/TrueLib.kicad_sym") (options "") (descr "Project-local library"))
+)

@@ -18,3 +18,13 @@ __pycache__/
 *.bak
 .DS_Store
 Thumbs.db
+
+# KiCad local state and intermediate routing/print files
+/kicad/.history/
+/kicad/**/.history/
+/kicad/codexwork/
+/kicad/*-backups/
+/kicad/*.kicad_prl
+/kicad/~*.lck
+/kicad/*.dsn
+/kicad/*.ses
