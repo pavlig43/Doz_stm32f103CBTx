@@ -7,7 +7,6 @@
 - `doz_030.kicad_pro`, `doz_030.kicad_sch`, `doz_030.kicad_pcb` — проект, схема и плата.
 - `sym-lib-table`, `fp-lib-table`, `libraries/` — местные библиотеки TrueLib и нужные детали SparkFun. Их пути заданы через `${KIPRJMOD}`.
 - `models/` — все STEP-модели, назначенные деталям этой платы. Их форма и привязка сохранены; пути ведут внутрь проекта.
-- `doz_030-F_Cu.pdf`, `doz_030-B_Silkscreen.pdf` — исходные PDF меди и надписей.
 - `output/pdf/` — готовый лист для ЛУТ.
 - `tools/build_lut_pdf.py` — сборка двух комплектов на одном листе А4.
 - `AGENTS.md` — правила работы с платой и PDF.
@@ -24,9 +23,11 @@
 Нужны Python и пакеты `reportlab`, `pdfplumber`, `pypdf`. Из этой папки:
 
 ```powershell
-python tools/build_lut_pdf.py --board doz_030.kicad_pcb --output output/pdf/doz_030_lut_2sets_A4.pdf --work-dir codexwork/lut_pdf --kicad-cli kicad-cli --copper-pdf doz_030-F_Cu.pdf --silk-pdf doz_030-B_Silkscreen.pdf --copper-print-ready
+python tools/build_lut_pdf.py --board doz_030.kicad_pcb --output output/pdf/doz_030_lut_2sets_A4.pdf --work-dir codexwork/lut_pdf --kicad-cli kicad-cli
 ```
 
-В этой команде PDF меди уже зеркальный для ЛУТ, поэтому повторного отражения нет. При работе с другими входными файлами сначала проверьте их отражение.
+Команда выводит медь и надписи из сохранённой платы, затем собирает готовый лист. Нужен `kicad-cli` из KiCad 10.
 
-Если исходных PDF нет, уберите `--copper-pdf`, `--silk-pdf` и `--copper-print-ready`: скрипт выведет их из сохранённой платы и сам подготовит отражение. Для нового вывода нужен `kicad-cli` из KiCad 10. При печати готового листа выбирайте **100%, без подгонки и без дополнительного отражения**.
+Если есть свежие исходные PDF, добавьте `--copper-pdf <PDF меди>` и `--silk-pdf <PDF надписей>`. Для уже зеркальной меди добавьте `--copper-print-ready`. Перед сборкой проверьте масштаб, отверстия и отражение.
+
+При печати готового листа выбирайте **100%, без подгонки и без дополнительного отражения**.
