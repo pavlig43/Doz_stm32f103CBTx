@@ -1,0 +1,6 @@
+.history/
+/*-backups/
+/*.kicad_prl
+/~*.lck
+/*.dsn
+/*.ses
