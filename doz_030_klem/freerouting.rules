@@ -1,0 +1,45 @@
+
+(rules PCB freerouting.dsn
+  (snapAngle 
+    fortyfive_degree
+  )
+  (rule
+    (width 300.0)
+    (clearance 250.0)
+    (clearance 150.0 (type smd_to_turn_gap))
+    (clearance 62.6 (type smd))
+    (clearance 500.0 (type "board_edge"))
+  )
+  (padstack "Via[0-1]_600:300_um"
+    (shape
+      (circle F.Cu 600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_600:300_um" "Via[0-1]_600:300_um" default
+  )
+  (viaRule
+    default "Via[0-1]_600:300_um"
+  )
+  (viaRule
+    default "Via[0-1]_600:300_um"
+  )
+  (class default
+    GND +12V +5V +3.3V "Net-(U3-NRST)" "unconnected-(J1-Pin_2-Pad2)" "/M-" /SDA
+    /SCL "Net-(J4-Pin_4)" "Net-(J4-Pin_2)" "Net-(J4-Pin_1)" /SWCLK /SWDIO "Net-(Q1-G)" "Net-(U3-BOOT0)"
+    /R /G /B "/Motor_Pin" /But "/CH1_R" "unconnected-(SW1-PadMP2)" "/CH2_L"
+    "unconnected-(SW1-PadMP1)" "unconnected-(U3-PA1-Pad7)" /DOUT /SCK "unconnected-(U3-PB1-Pad14)" "unconnected-(U4-GND-Pad5)"
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 300.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
