@@ -91,8 +91,8 @@
 		(filling no)
 		(zone_defaults)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55555555_5755f5ff)
-			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
+			(layerselection 0x00000000_00000000_55555555_55555551)
+			(plot_on_all_layers_selection 0x00000000_00000000_00000080_02000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
 			(usegerberattributes yes)
@@ -111,7 +111,7 @@
 			(dxfpolygonmode yes)
 			(dxfimperialunits yes)
 			(dxfusepcbnewfont yes)
-			(psnegative no)
+			(psnegative yes)
 			(psa4output no)
 			(plot_black_and_white yes)
 			(sketchpadsonfab no)
@@ -120,9 +120,9 @@
 			(sketchdnponfab yes)
 			(crossoutdnponfab yes)
 			(subtractmaskfromsilk no)
-			(outputformat 1)
-			(mirror no)
-			(drillshape 1)
+			(outputformat 4)
+			(mirror yes)
+			(drillshape 2)
 			(scaleselection 1)
 			(outputdirectory "")
 		)
@@ -13224,6 +13224,50 @@
 		(layer "Edge.Cuts")
 		(uuid "75b6fe7a-47e2-42eb-ad83-c732fe5b2854")
 	)
+	(gr_rect
+		(start -13.2 -2.2)
+		(end 151.2 54.2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "User.1")
+		(uuid "0fa1007e-ebaa-4f7c-99d8-555bd2f3d17b")
+	)
+	(gr_rect
+		(start -12 53.8)
+		(end 63.6 212)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "User.1")
+		(uuid "1fc018da-9ac1-4c2a-871d-c90df2b70499")
+	)
+	(gr_rect
+		(start 61.2 97)
+		(end 184 211.6)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "User.1")
+		(uuid "1e779c1f-9272-4cde-9af3-7882685251fe")
+	)
+	(gr_rect
+		(start 133.2 -22.4)
+		(end 296.6 212)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "User.1")
+		(uuid "77c13acd-9bba-44ba-b746-3d6f3d52b86a")
+	)
 	(gr_text "DIO\n"
 		(at 84 83.2 0)
 		(layer "B.SilkS")
@@ -13246,20 +13290,8 @@
 			(justify left bottom mirror)
 		)
 	)
-	(gr_text "3.3\n"
-		(at 74.733333 82.4 0)
-		(layer "B.SilkS")
-		(uuid "628e8c69-3e4e-4460-b6ab-6d7ea939f542")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.1)
-			)
-			(justify left bottom mirror)
-		)
-	)
-	(gr_text "SCK"
-		(at 75.304762 79.6 0)
+	(gr_text "5V"
+		(at 74.961905 79.6 0)
 		(layer "B.SilkS")
 		(uuid "08bd402c-0bd8-4b8e-a804-e3586065c553")
 		(effects
@@ -13270,8 +13302,8 @@
 			(justify left bottom mirror)
 		)
 	)
-	(gr_text "GND"
-		(at 75.4 74.6 0)
+	(gr_text "SCL\n"
+		(at 75.914286 74.6 0)
 		(layer "B.SilkS")
 		(uuid "873277e9-e153-41ed-b502-e6289fd5e25d")
 		(effects
@@ -13282,10 +13314,22 @@
 			(justify left bottom mirror)
 		)
 	)
-	(gr_text "DOUT"
-		(at 76.209524 77.2 0)
+	(gr_text "SDA"
+		(at 75.961905 77.2 0)
 		(layer "B.SilkS")
 		(uuid "bfe6deaf-7bf7-452a-af81-110bc3be2180")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "GND\n"
+		(at 76.2 82.4 0)
+		(layer "B.SilkS")
+		(uuid "628e8c69-3e4e-4460-b6ab-6d7ea939f542")
 		(effects
 			(font
 				(size 1 1)
